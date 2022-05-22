@@ -45,6 +45,9 @@ android_app {
         "com.google.zxing_core",
         "guava",
     ],
+    jni_libs: [
+        "libimage_processing_util_jni",
+    ],
     optional_uses_libs: [
         "androidx.camera.extensions.impl",
     ],
