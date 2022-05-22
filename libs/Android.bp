@@ -20,6 +20,28 @@ android_library_import {
     sdk_version: "current",
 }
 
+cc_prebuilt_library_shared {
+    name: "libimage_processing_util_jni",
+    sdk_version: "current",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm: {
+            srcs: ["androidx.camera_camera-core/jni/armeabi-v7a/libimage_processing_util_jni.so"],
+        },
+        android_arm64: {
+            srcs: ["androidx.camera_camera-core/jni/arm64-v8a/libimage_processing_util_jni.so"],
+        },
+        android_x86: {
+            srcs: ["androidx.camera_camera-core/jni/x86/libimage_processing_util_jni.so"],
+        },
+        android_x86_64: {
+            srcs: ["androidx.camera_camera-core/jni/x86_64/libimage_processing_util_jni.so"],
+        },
+    }
+}
+
 android_library_import {
     name: "androidx.camera_camera-core",
     aars: ["androidx.camera_camera-core-*.aar"],
