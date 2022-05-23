@@ -165,9 +165,9 @@ object CapturedItems {
                 }
             }
         } catch (e: Exception) {
-            /*if (BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "unable to collect SAF items, treeUri $treeUri", e)
-            }*/
+            }
         }
     }
 

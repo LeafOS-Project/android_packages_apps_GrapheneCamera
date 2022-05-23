@@ -21,10 +21,12 @@ android_app {
     system_ext_specific: true,
     overrides: ["Camera2"],
     srcs: [
+        "app/src/aosp/java/**/*.java",
         "app/src/main/java/**/*.java",
         "app/src/main/java/**/*.kt",
     ],
     resource_dirs: [
+        "app/src/aosp/res",
         "app/src/main/res",
     ],
     static_libs: [
