@@ -17,7 +17,6 @@
 android_app {
     name: "GrapheneCamera",
     platform_apis: true,
-    certificate: "platform",
     system_ext_specific: true,
     overrides: ["Camera2"],
     srcs: [
