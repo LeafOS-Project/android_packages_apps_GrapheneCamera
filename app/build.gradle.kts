@@ -40,7 +40,7 @@ android {
         applicationId = "app.grapheneos.camera"
         minSdk = 29
         targetSdk = 32
-        versionCode = 39
+        versionCode = 45
         versionName = versionCode.toString()
     }
 
@@ -82,19 +82,24 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    lintOptions {
+        disable("LintError")
+    }
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.6.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("com.google.android.material:material:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    implementation("androidx.camera:camera-core:1.1.0-rc01")
-    implementation("androidx.camera:camera-camera2:1.1.0-rc01")
-    implementation("androidx.camera:camera-lifecycle:1.1.0-rc01")
-    implementation("androidx.camera:camera-video:1.1.0-rc01")
-    implementation("androidx.camera:camera-view:1.1.0-rc01")
-    implementation("androidx.camera:camera-extensions:1.1.0-rc01")
+    val cameraVersion = "1.2.0-alpha04"
+    implementation("androidx.camera:camera-core:$cameraVersion")
+    implementation("androidx.camera:camera-camera2:$cameraVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraVersion")
+    implementation("androidx.camera:camera-video:$cameraVersion")
+    implementation("androidx.camera:camera-view:$cameraVersion")
+    implementation("androidx.camera:camera-extensions:$cameraVersion")
 
     implementation("com.google.zxing:core:3.5.0")
 }

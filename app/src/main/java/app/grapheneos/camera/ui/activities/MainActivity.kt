@@ -204,22 +204,10 @@ open class MainActivity : AppCompatActivity(),
             previewView.width.toFloat(), previewView.height.toFloat()
         )
 
-        val shouldUseFocusRegion = when (Build.PRODUCT) {
-            "OnePlus6", "OnePlus6T" -> false
-            else -> true
-        }
-
-        val autoFocusPoint = if (shouldUseFocusRegion) {
-            factory.createPoint(
-                previewView.width / 2.0f,
-                previewView.height / 2.0f, qrOverlay.size
-            )
-        } else {
-            factory.createPoint(
-                previewView.width / 2.0f,
-                previewView.height / 2.0f
-            )
-        }
+        val autoFocusPoint = factory.createPoint(
+            previewView.width / 2.0f,
+            previewView.height / 2.0f, QROverlay.RATIO
+        )
 
         camConfig.camera?.cameraControl?.startFocusAndMetering(
             FocusMeteringAction.Builder(autoFocusPoint).disableAutoCancel().build()
@@ -887,7 +875,7 @@ open class MainActivity : AppCompatActivity(),
                     (mainFrame.layoutParams as ViewGroup.MarginLayoutParams).let {
                         it.setMargins(
                             it.leftMargin,
-                            insets.top,
+                            (8 * resources.displayMetrics.density.toInt()) + insets.top,
                             it.rightMargin,
                             it.bottomMargin,
                         )
@@ -1008,15 +996,10 @@ open class MainActivity : AppCompatActivity(),
 
                     val previewHeight169 = previewContainer.width * 16 / 9
 
-                    val previewHeight43 = previewContainer.width * 4 / 3
-
                     val extraHeight169 = previewContainer.height -
                             previewHeight169 -
                             tabLayout.height -
                             10 * resources.displayMetrics.density.toInt()
-
-                    val halfOfExtraHeight = (previewContainer.height -
-                            previewHeight43) / 2
 
                     tabLayout.layoutParams =
                         (tabLayout.layoutParams as ViewGroup.MarginLayoutParams).let {
@@ -1031,14 +1014,6 @@ open class MainActivity : AppCompatActivity(),
                                     it.bottomMargin
                                 }
                             )
-
-                            it
-                        }
-
-                    qrScanToggles.layoutParams =
-                        (qrScanToggles.layoutParams as ViewGroup.MarginLayoutParams).let {
-
-                            it.height = halfOfExtraHeight
 
                             it
                         }
