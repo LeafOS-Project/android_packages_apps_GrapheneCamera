@@ -62,6 +62,7 @@ enum class CameraMode(val extensionMode: Int, val uiName: Int) {
     VIDEO(ExtensionMode.NONE, R.string.video),
 }
 
+@SuppressLint("UnsafeOptInUsageError")
 class CamConfig(private val mActivity: MainActivity) {
 
     enum class GridType {
@@ -103,6 +104,8 @@ class CamConfig(private val mActivity: MainActivity) {
 
             const val CAMERA_SOUNDS = "camera_sounds"
 
+            const val ENABLE_ZSL = "enable_zsl"
+
             // const val IMAGE_FILE_FORMAT = "image_quality"
             // const val VIDEO_FILE_FORMAT = "video_quality"
         }
@@ -113,6 +116,8 @@ class CamConfig(private val mActivity: MainActivity) {
             const val GRID_TYPE_INDEX = 0
 
             const val ASPECT_RATIO = AspectRatio.RATIO_4_3
+
+            val VIDEO_QUALITY = Quality.HIGHEST
 
             const val SELF_ILLUMINATION = false
 
@@ -141,6 +146,8 @@ class CamConfig(private val mActivity: MainActivity) {
             const val GYROSCOPE_SUGGESTIONS = false
 
             const val CAMERA_SOUNDS = true
+
+            const val ENABLE_ZSL = false
 
             // const val IMAGE_FILE_FORMAT = ""
             // const val VIDEO_FILE_FORMAT = ""
@@ -301,14 +308,14 @@ class CamConfig(private val mActivity: MainActivity) {
             field = value
         }
 
-    var videoQuality: Quality? = null
+    var videoQuality: Quality = SettingValues.Default.VIDEO_QUALITY
         get() {
             return if (modePref.contains(videoQualityKey)) {
                 mActivity.settingsDialog.titleToQuality(
                     modePref.getString(videoQualityKey, "")!!
                 )
             } else {
-                null
+                SettingValues.Default.VIDEO_QUALITY
             }
         }
         set(value) {
@@ -429,6 +436,19 @@ class CamConfig(private val mActivity: MainActivity) {
             mActivity.settingsDialog.enableEISToggle.isChecked = value
         }
 
+    var enableZsl: Boolean
+        get() {
+            return commonPref.getBoolean(
+                SettingValues.Key.ENABLE_ZSL,
+                SettingValues.Default.ENABLE_ZSL
+            )
+        }
+        set(value) {
+            val editor = commonPref.edit()
+            editor.putBoolean(SettingValues.Key.ENABLE_ZSL, value)
+            editor.apply()
+        }
+
     var saveImageAsPreviewed: Boolean
         get() {
             return commonPref.getBoolean(
@@ -504,6 +524,10 @@ class CamConfig(private val mActivity: MainActivity) {
             )
             editor.apply()
         }
+
+    val isZslSupported : Boolean by lazy {
+        camera!!.cameraInfo.isZslSupported
+    }
 
     fun shouldShowGyroscope(): Boolean {
         return isInPhotoMode && gSuggestions
@@ -644,16 +668,7 @@ class CamConfig(private val mActivity: MainActivity) {
             }
 
             if (isVideoMode) {
-
-                if (!modePref.contains(videoQualityKey)) {
-                    mActivity.settingsDialog.reloadQualities()
-                    val option = mActivity.settingsDialog.videoQualitySpinner.selectedItem as String?
-                    putString(videoQualityKey, option)
-                } else {
-                    modePref.getString(videoQualityKey, null)?.let {
-                        mActivity.settingsDialog.reloadQualities(it)
-                    }
-                }
+                mActivity.settingsDialog.reloadQualities()
             }
 
             if (lensFacing == CameraSelector.LENS_FACING_FRONT) {
@@ -1009,7 +1024,13 @@ class CamConfig(private val mActivity: MainActivity) {
             iAnalyzer = mIAnalyzer
             mIAnalyzer.setAnalyzer(cameraExecutor, analyzer)
             cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .requireLensFacing(
+                    if (isLensFacingSupported(CameraSelector.LENS_FACING_BACK)) {
+                        CameraSelector.LENS_FACING_BACK
+                    } else {
+                        mActivity.showMessage(R.string.qr_rear_camera_unavailable)
+                        CameraSelector.LENS_FACING_FRONT
+                    })
                 .build()
             useCaseGroupBuilder.addUseCase(mIAnalyzer)
 
@@ -1023,20 +1044,12 @@ class CamConfig(private val mActivity: MainActivity) {
                         View.VISIBLE
                     }
 
-                // QualitySelector fallback doesn't work correctly so we can only set a known
-                // supported quality configured via the setting previously
-                // https://issuetracker.google.com/issues/230651237
-                val videoQuality = videoQuality
-                if (videoQuality != null) {
-                    videoCapture =
-                        VideoCapture.withOutput(
-                            Recorder.Builder()
-                                .setQualitySelector(QualitySelector.from(videoQuality))
-                                .build()
-                        )
-                } else {
-                    videoCapture = VideoCapture.withOutput(Recorder.Builder().build())
-                }
+                videoCapture =
+                    VideoCapture.withOutput(
+                        Recorder.Builder()
+                            .setQualitySelector(QualitySelector.from(videoQuality))
+                            .build()
+                    )
 
                 useCaseGroupBuilder.addUseCase(videoCapture!!)
             }
@@ -1047,7 +1060,11 @@ class CamConfig(private val mActivity: MainActivity) {
                         if (emphasisQuality) {
                             ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
                         } else {
-                            ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+                            if (enableZsl) {
+                                ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG
+                            } else {
+                                ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+                            }
                         }
                     )
 
@@ -1156,16 +1173,6 @@ class CamConfig(private val mActivity: MainActivity) {
 
         if (selfIlluminate) {
 
-            mActivity.mainOverlay.layoutParams =
-                (mActivity.mainOverlay.layoutParams as FrameLayout.LayoutParams).apply {
-                    this.setMargins(
-                        leftMargin,
-                        0, // topMargin
-                        rightMargin,
-                        0 // bottomMargin
-                    )
-                }
-
             val animation: Animation = AlphaAnimation(0f, 0.8f)
             animation.duration = PREVIEW_SL_OVERLAY_DUR
             animation.interpolator = LinearInterpolator()
@@ -1206,7 +1213,6 @@ class CamConfig(private val mActivity: MainActivity) {
                     override fun onAnimationEnd(p0: Animation?) {
                         mActivity.mainOverlay.visibility = View.INVISIBLE
                         mActivity.mainOverlay.setImageResource(android.R.color.transparent)
-                        mActivity.updateLastFrame()
                     }
 
                     override fun onAnimationRepeat(p0: Animation?) {}
