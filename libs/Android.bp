@@ -16,7 +16,7 @@
 
 android_library_import {
     name: "androidx.camera_camera-camera2",
-    aars: ["androidx.camera_camera-camera2-*.aar"],
+    aars: ["androidx.camera_camera-camera2.aar"],
     sdk_version: "current",
 }
 
@@ -46,48 +46,48 @@ cc_prebuilt_library_shared {
 
 android_library_import {
     name: "androidx.camera_camera-core",
-    aars: ["androidx.camera_camera-core-*.aar"],
+    aars: ["androidx.camera_camera-core.aar"],
     sdk_version: "current",
 }
 
 android_library_import {
     name: "androidx.camera_camera-extensions",
-    aars: ["androidx.camera_camera-extensions-*.aar"],
+    aars: ["androidx.camera_camera-extensions.aar"],
     sdk_version: "current",
 }
 
 android_library_import {
     name: "androidx.camera_camera-lifecycle",
-    aars: ["androidx.camera_camera-lifecycle-*.aar"],
+    aars: ["androidx.camera_camera-lifecycle.aar"],
     sdk_version: "current",
 }
 
 android_library_import {
     name: "androidx.camera_camera-video",
-    aars: ["androidx.camera_camera-video-*.aar"],
+    aars: ["androidx.camera_camera-video.aar"],
     sdk_version: "current",
 }
 
 android_library_import {
     name: "androidx.camera_camera-view",
-    aars: ["androidx.camera_camera-view-*.aar"],
+    aars: ["androidx.camera_camera-view.aar"],
     sdk_version: "current",
 }
 
 java_import {
     name: "androidx.concurrent_concurrent-futures",
-    jars: ["androidx.concurrent_concurrent-futures-*.jar"],
+    jars: ["androidx.concurrent_concurrent-futures.jar"],
     sdk_version: "current",
 }
 
 android_library_import {
     name: "androidx.databinding_viewbinding",
-    aars: ["androidx.databinding_viewbinding-*.aar"],
+    aars: ["androidx.databinding_viewbinding.aar"],
     sdk_version: "current",
 }
 
 java_import {
     name: "com.google.zxing_core",
-    jars: ["com.google.zxing_core-*.jar"],
+    jars: ["com.google.zxing_core.jar"],
     sdk_version: "current",
 }
