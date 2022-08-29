@@ -41,6 +41,9 @@ public final class MoreSettingsBinding implements ViewBinding {
   public final TextView cameraSoundsTitle;
 
   @NonNull
+  public final LinearLayout generalSettings;
+
+  @NonNull
   public final LinearLayout gyroscopeSetting;
 
   @NonNull
@@ -81,6 +84,9 @@ public final class MoreSettingsBinding implements ViewBinding {
 
   @NonNull
   public final TextView photoQualityTitle;
+
+  @NonNull
+  public final LinearLayout photoSettings;
 
   @NonNull
   public final ImageButton refreshStorageLocation;
@@ -128,6 +134,9 @@ public final class MoreSettingsBinding implements ViewBinding {
   public final LinearLayout storageLocationSetting;
 
   @NonNull
+  public final LinearLayout storageLocationSettings;
+
+  @NonNull
   public final TextView storageLocationTitle;
 
   @NonNull
@@ -142,34 +151,54 @@ public final class MoreSettingsBinding implements ViewBinding {
   @NonNull
   public final TextView videoFormatSettingTitle;
 
+  @NonNull
+  public final ImageView zslIcon;
+
+  @NonNull
+  public final LinearLayout zslSetting;
+
+  @NonNull
+  public final TextView zslSettingSubtitle;
+
+  @NonNull
+  public final TextView zslSettingTitle;
+
+  @NonNull
+  public final SwitchCompat zslSettingToggle;
+
   private MoreSettingsBinding(@NonNull ScrollView rootView_,
       @NonNull TextView cameraSoundsDescription, @NonNull ImageView cameraSoundsIcon,
       @NonNull LinearLayout cameraSoundsSetting, @NonNull SwitchCompat cameraSoundsSwitch,
-      @NonNull TextView cameraSoundsTitle, @NonNull LinearLayout gyroscopeSetting,
-      @NonNull TextView gyroscopeSettingDescription, @NonNull ImageView gyroscopeSettingIcon,
-      @NonNull SwitchCompat gyroscopeSettingSwitch, @NonNull TextView gyroscopeSettingTitle,
-      @NonNull LinearLayout imageFormatSetting,
+      @NonNull TextView cameraSoundsTitle, @NonNull LinearLayout generalSettings,
+      @NonNull LinearLayout gyroscopeSetting, @NonNull TextView gyroscopeSettingDescription,
+      @NonNull ImageView gyroscopeSettingIcon, @NonNull SwitchCompat gyroscopeSettingSwitch,
+      @NonNull TextView gyroscopeSettingTitle, @NonNull LinearLayout imageFormatSetting,
       @NonNull AutoCompleteTextView imageFormatSettingField,
       @NonNull ImageView imageFormatSettingIcon, @NonNull TextView imageFormatSettingTitle,
       @NonNull EditText photoQuality, @NonNull ImageView photoQualityIcon,
       @NonNull LinearLayout photoQualitySetting, @NonNull TextView photoQualitySubtitle,
-      @NonNull TextView photoQualityTitle, @NonNull ImageButton refreshStorageLocation,
-      @NonNull ImageView removeExifIcon, @NonNull LinearLayout removeExifSetting,
-      @NonNull TextView removeExifSubtitle, @NonNull TextView removeExifTitle,
-      @NonNull SwitchCompat removeExifToggle, @NonNull LinearLayout rootView,
-      @NonNull ImageView saveImageAsPreviewIcon, @NonNull LinearLayout saveImageAsPreviewSetting,
-      @NonNull TextView saveImageAsPreviewSubtitle, @NonNull TextView saveImageAsPreviewTitle,
-      @NonNull SwitchCompat saveImageAsPreviewToggle, @NonNull EditText storageLocationField,
-      @NonNull ImageView storageLocationIcon, @NonNull LinearLayout storageLocationSetting,
+      @NonNull TextView photoQualityTitle, @NonNull LinearLayout photoSettings,
+      @NonNull ImageButton refreshStorageLocation, @NonNull ImageView removeExifIcon,
+      @NonNull LinearLayout removeExifSetting, @NonNull TextView removeExifSubtitle,
+      @NonNull TextView removeExifTitle, @NonNull SwitchCompat removeExifToggle,
+      @NonNull LinearLayout rootView, @NonNull ImageView saveImageAsPreviewIcon,
+      @NonNull LinearLayout saveImageAsPreviewSetting, @NonNull TextView saveImageAsPreviewSubtitle,
+      @NonNull TextView saveImageAsPreviewTitle, @NonNull SwitchCompat saveImageAsPreviewToggle,
+      @NonNull EditText storageLocationField, @NonNull ImageView storageLocationIcon,
+      @NonNull LinearLayout storageLocationSetting, @NonNull LinearLayout storageLocationSettings,
       @NonNull TextView storageLocationTitle, @NonNull LinearLayout videoFormatSetting,
       @NonNull AutoCompleteTextView videoFormatSettingField,
-      @NonNull ImageView videoFormatSettingIcon, @NonNull TextView videoFormatSettingTitle) {
+      @NonNull ImageView videoFormatSettingIcon, @NonNull TextView videoFormatSettingTitle,
+      @NonNull ImageView zslIcon, @NonNull LinearLayout zslSetting,
+      @NonNull TextView zslSettingSubtitle, @NonNull TextView zslSettingTitle,
+      @NonNull SwitchCompat zslSettingToggle) {
     this.rootView_ = rootView_;
     this.cameraSoundsDescription = cameraSoundsDescription;
     this.cameraSoundsIcon = cameraSoundsIcon;
     this.cameraSoundsSetting = cameraSoundsSetting;
     this.cameraSoundsSwitch = cameraSoundsSwitch;
     this.cameraSoundsTitle = cameraSoundsTitle;
+    this.generalSettings = generalSettings;
     this.gyroscopeSetting = gyroscopeSetting;
     this.gyroscopeSettingDescription = gyroscopeSettingDescription;
     this.gyroscopeSettingIcon = gyroscopeSettingIcon;
@@ -184,6 +213,7 @@ public final class MoreSettingsBinding implements ViewBinding {
     this.photoQualitySetting = photoQualitySetting;
     this.photoQualitySubtitle = photoQualitySubtitle;
     this.photoQualityTitle = photoQualityTitle;
+    this.photoSettings = photoSettings;
     this.refreshStorageLocation = refreshStorageLocation;
     this.removeExifIcon = removeExifIcon;
     this.removeExifSetting = removeExifSetting;
@@ -199,11 +229,17 @@ public final class MoreSettingsBinding implements ViewBinding {
     this.storageLocationField = storageLocationField;
     this.storageLocationIcon = storageLocationIcon;
     this.storageLocationSetting = storageLocationSetting;
+    this.storageLocationSettings = storageLocationSettings;
     this.storageLocationTitle = storageLocationTitle;
     this.videoFormatSetting = videoFormatSetting;
     this.videoFormatSettingField = videoFormatSettingField;
     this.videoFormatSettingIcon = videoFormatSettingIcon;
     this.videoFormatSettingTitle = videoFormatSettingTitle;
+    this.zslIcon = zslIcon;
+    this.zslSetting = zslSetting;
+    this.zslSettingSubtitle = zslSettingSubtitle;
+    this.zslSettingTitle = zslSettingTitle;
+    this.zslSettingToggle = zslSettingToggle;
   }
 
   @Override
@@ -260,6 +296,12 @@ public final class MoreSettingsBinding implements ViewBinding {
       id = R.id.camera_sounds_title;
       TextView cameraSoundsTitle = ViewBindings.findChildViewById(rootView, id);
       if (cameraSoundsTitle == null) {
+        break missingId;
+      }
+
+      id = R.id.general_settings;
+      LinearLayout generalSettings = ViewBindings.findChildViewById(rootView, id);
+      if (generalSettings == null) {
         break missingId;
       }
 
@@ -344,6 +386,12 @@ public final class MoreSettingsBinding implements ViewBinding {
       id = R.id.photo_quality_title;
       TextView photoQualityTitle = ViewBindings.findChildViewById(rootView, id);
       if (photoQualityTitle == null) {
+        break missingId;
+      }
+
+      id = R.id.photo_settings;
+      LinearLayout photoSettings = ViewBindings.findChildViewById(rootView, id);
+      if (photoSettings == null) {
         break missingId;
       }
 
@@ -437,6 +485,12 @@ public final class MoreSettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.storage_location_settings;
+      LinearLayout storageLocationSettings = ViewBindings.findChildViewById(rootView, id);
+      if (storageLocationSettings == null) {
+        break missingId;
+      }
+
       id = R.id.storage_location_title;
       TextView storageLocationTitle = ViewBindings.findChildViewById(rootView, id);
       if (storageLocationTitle == null) {
@@ -467,18 +521,49 @@ public final class MoreSettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.zsl_icon;
+      ImageView zslIcon = ViewBindings.findChildViewById(rootView, id);
+      if (zslIcon == null) {
+        break missingId;
+      }
+
+      id = R.id.zsl_setting;
+      LinearLayout zslSetting = ViewBindings.findChildViewById(rootView, id);
+      if (zslSetting == null) {
+        break missingId;
+      }
+
+      id = R.id.zsl_setting_subtitle;
+      TextView zslSettingSubtitle = ViewBindings.findChildViewById(rootView, id);
+      if (zslSettingSubtitle == null) {
+        break missingId;
+      }
+
+      id = R.id.zsl_setting_title;
+      TextView zslSettingTitle = ViewBindings.findChildViewById(rootView, id);
+      if (zslSettingTitle == null) {
+        break missingId;
+      }
+
+      id = R.id.zsl_setting_toggle;
+      SwitchCompat zslSettingToggle = ViewBindings.findChildViewById(rootView, id);
+      if (zslSettingToggle == null) {
+        break missingId;
+      }
+
       return new MoreSettingsBinding((ScrollView) rootView, cameraSoundsDescription,
           cameraSoundsIcon, cameraSoundsSetting, cameraSoundsSwitch, cameraSoundsTitle,
-          gyroscopeSetting, gyroscopeSettingDescription, gyroscopeSettingIcon,
+          generalSettings, gyroscopeSetting, gyroscopeSettingDescription, gyroscopeSettingIcon,
           gyroscopeSettingSwitch, gyroscopeSettingTitle, imageFormatSetting,
           imageFormatSettingField, imageFormatSettingIcon, imageFormatSettingTitle, photoQuality,
           photoQualityIcon, photoQualitySetting, photoQualitySubtitle, photoQualityTitle,
-          refreshStorageLocation, removeExifIcon, removeExifSetting, removeExifSubtitle,
-          removeExifTitle, removeExifToggle, rootView_, saveImageAsPreviewIcon,
+          photoSettings, refreshStorageLocation, removeExifIcon, removeExifSetting,
+          removeExifSubtitle, removeExifTitle, removeExifToggle, rootView_, saveImageAsPreviewIcon,
           saveImageAsPreviewSetting, saveImageAsPreviewSubtitle, saveImageAsPreviewTitle,
           saveImageAsPreviewToggle, storageLocationField, storageLocationIcon,
-          storageLocationSetting, storageLocationTitle, videoFormatSetting, videoFormatSettingField,
-          videoFormatSettingIcon, videoFormatSettingTitle);
+          storageLocationSetting, storageLocationSettings, storageLocationTitle, videoFormatSetting,
+          videoFormatSettingField, videoFormatSettingIcon, videoFormatSettingTitle, zslIcon,
+          zslSetting, zslSettingSubtitle, zslSettingTitle, zslSettingToggle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

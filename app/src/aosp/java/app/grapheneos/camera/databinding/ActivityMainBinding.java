@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
-import androidx.viewpager2.widget.ViewPager2;
 import app.grapheneos.camera.R;
 import app.grapheneos.camera.ui.BottomTabLayout;
 import app.grapheneos.camera.ui.CountDownTimerUI;
@@ -74,9 +73,6 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final ImageView exposurePlusIcon;
-
-  @NonNull
-  public final ViewPager2 flashPager;
 
   @NonNull
   public final FrameLayout flipCameraCircle;
@@ -196,11 +192,11 @@ public final class ActivityMainBinding implements ViewBinding {
       @NonNull ImageButton confirmButton, @NonNull QRToggle dataMatrixToggle,
       @NonNull ExposureBar exposureBar, @NonNull LinearLayout exposureBarPanel,
       @NonNull ImageView exposureNegIcon, @NonNull ImageView exposurePlusIcon,
-      @NonNull ViewPager2 flashPager, @NonNull FrameLayout flipCameraCircle,
-      @NonNull ImageView flipCameraIcon, @NonNull ImageView flipCameraIconContent,
-      @NonNull ImageView focusRing, @NonNull LinearLayout gCircle,
-      @NonNull FrameLayout gCircleFrame, @NonNull View gCircleLeftDash, @NonNull View gCircleLineX,
-      @NonNull View gCircleLineZ, @NonNull View gCircleRightDash, @NonNull TextView gCircleText,
+      @NonNull FrameLayout flipCameraCircle, @NonNull ImageView flipCameraIcon,
+      @NonNull ImageView flipCameraIconContent, @NonNull ImageView focusRing,
+      @NonNull LinearLayout gCircle, @NonNull FrameLayout gCircleFrame,
+      @NonNull View gCircleLeftDash, @NonNull View gCircleLineX, @NonNull View gCircleLineZ,
+      @NonNull View gCircleRightDash, @NonNull TextView gCircleText,
       @NonNull ShapeableImageView imagePreview, @NonNull FrameLayout mainFrame,
       @NonNull ImageView mainOverlay, @NonNull ImageView micOff, @NonNull ImageView moreOptions,
       @NonNull QRToggle pdf417Toggle, @NonNull ImageView playPreview, @NonNull PreviewView preview,
@@ -227,7 +223,6 @@ public final class ActivityMainBinding implements ViewBinding {
     this.exposureBarPanel = exposureBarPanel;
     this.exposureNegIcon = exposureNegIcon;
     this.exposurePlusIcon = exposurePlusIcon;
-    this.flashPager = flashPager;
     this.flipCameraCircle = flipCameraCircle;
     this.flipCameraIcon = flipCameraIcon;
     this.flipCameraIconContent = flipCameraIconContent;
@@ -369,12 +364,6 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.exposure_plus_icon;
       ImageView exposurePlusIcon = ViewBindings.findChildViewById(rootView, id);
       if (exposurePlusIcon == null) {
-        break missingId;
-      }
-
-      id = R.id.flash_pager;
-      ViewPager2 flashPager = ViewBindings.findChildViewById(rootView, id);
-      if (flashPager == null) {
         break missingId;
       }
 
@@ -603,13 +592,12 @@ public final class ActivityMainBinding implements ViewBinding {
       return new ActivityMainBinding((CoordinatorLayout) rootView, aztecToggle, cTimer,
           cameraModeTabs, cancelButton, captureButton, captureButtonCross, captureButtonText,
           confirmButton, dataMatrixToggle, exposureBar, exposureBarPanel, exposureNegIcon,
-          exposurePlusIcon, flashPager, flipCameraCircle, flipCameraIcon, flipCameraIconContent,
-          focusRing, gCircle, gCircleFrame, gCircleLeftDash, gCircleLineX, gCircleLineZ,
-          gCircleRightDash, gCircleText, imagePreview, mainFrame, mainOverlay, micOff, moreOptions,
-          pdf417Toggle, playPreview, preview, previewContainer, previewGrid, previewLoading,
-          qrOverlay, qrScanToggle, qrScanToggles, retakeIcon, root, settingsOption, thirdCircle,
-          thirdOption, threeButtons, timer, whiteOptionCircle, zoomBar, zoomBarPanel, zoomInIcon,
-          zoomOutIcon);
+          exposurePlusIcon, flipCameraCircle, flipCameraIcon, flipCameraIconContent, focusRing,
+          gCircle, gCircleFrame, gCircleLeftDash, gCircleLineX, gCircleLineZ, gCircleRightDash,
+          gCircleText, imagePreview, mainFrame, mainOverlay, micOff, moreOptions, pdf417Toggle,
+          playPreview, preview, previewContainer, previewGrid, previewLoading, qrOverlay,
+          qrScanToggle, qrScanToggles, retakeIcon, root, settingsOption, thirdCircle, thirdOption,
+          threeButtons, timer, whiteOptionCircle, zoomBar, zoomBarPanel, zoomInIcon, zoomOutIcon);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
